@@ -55,6 +55,20 @@ def process_video_file(input_path, output_path, is_demo, test="light"):
                 # Draw green text
                 cv2.putText(result_img, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
+        elif test == "all":
+            frame, mode, val = enhancer.process_frame(frame)
+            frame = linear_fisheye_correction(frame)
+            result_img = enhance_sobel(frame, demo_plot=False)
+
+            # Demo Mode: Draw Text
+            if is_demo:
+                text = f"Mode: {mode} (Avg: {val:.1f})"
+                # Draw black outline
+                cv2.putText(result_img, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 4)
+                # Draw green text
+                cv2.putText(result_img, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+
         # # Write to Output Video
         out.write(result_img)
 
