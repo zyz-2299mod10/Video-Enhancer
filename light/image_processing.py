@@ -28,6 +28,7 @@ class VideoEnhancer:
     def __init__(self):
         self.last_good_frame = None
         self.overexposure_counter = 0
+        self.accumulated_profile = None
 
     def get_brightness(self, img):
         """
@@ -107,18 +108,18 @@ class VideoEnhancer:
         """
         if self.last_good_frame is None: return current
 
-        # 1. Convert both to LAB
+        # Convert both to LAB
         cur_lab = cv2.cvtColor(current, cv2.COLOR_BGR2LAB)
         last_lab = cv2.cvtColor(self.last_good_frame, cv2.COLOR_BGR2LAB)
 
         cur_l, cur_a, cur_b = cv2.split(cur_lab)
         last_l, _, _ = cv2.split(last_lab) # We don't care about old color
 
-        # 2. Blend L Channel Only
+        # Blend L Channel Only
         # new_L = last_L * alpha + cur_L * (1 - alpha)
         new_l = cv2.addWeighted(last_l, alpha, cur_l, 1 - alpha, 0)
 
-        # 3. Merge with CURRENT A/B Channels
+        # Merge with CURRENT A/B Channels
         # This ensures the color is exactly where the object is NOW.
         merged = cv2.merge((new_l, cur_a, cur_b))
 
@@ -128,9 +129,9 @@ class VideoEnhancer:
         """
         Main Pipeline
         """
-        brightness = self.get_brightness(img)
-        mode_str = ""
         processed_img = img.copy()
+        brightness = self.get_brightness(processed_img)
+        mode_str = ""
 
         # Overexposure
         if brightness > THRESH_OVEREXPOSURE:
@@ -140,7 +141,7 @@ class VideoEnhancer:
                 mode_str = "Overexposure (Blending)"
                 
                 # Darken current frame to recover info from white clipping
-                current_darkened = cv2.convertScaleAbs(img, alpha=DARKEN_FACTOR, beta=0)
+                current_darkened = cv2.convertScaleAbs(processed_img, alpha=DARKEN_FACTOR, beta=0)
 
                 # USE RGB BLEND (Because the RGB in overexposure are all broken)
                 processed_img = self.temporal_blend_rgb(current_darkened, BLEND_OVER_EX)
@@ -188,7 +189,7 @@ class VideoEnhancer:
         # Normal Lighting
         else:
             mode_str = "Normal Lighting"
-            processed_img = self.temporal_blend_luma(img, BLEND_NORMAL)
+            processed_img = self.temporal_blend_luma(processed_img, BLEND_NORMAL)
             
             self.overexposure_counter = 0
 

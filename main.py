@@ -3,17 +3,17 @@ import time
 import argparse
 import os
 
-from image_processing import VideoEnhancer
-from sobel_detail_demo import linear_fisheye_correction, enhance_sobel
+from light.image_processing import VideoEnhancer
+from distortion.sobel_detail_demo import linear_fisheye_correction, enhance_sobel
 
 def process_video_file(input_path, output_path, is_demo, test="light"):
-    # 1. Open Input Video
+    # Open Input Video
     cap = cv2.VideoCapture(input_path)
     if not cap.isOpened():
         print(f"Error: Could not open video file {input_path}")
         return
 
-    # 2. Get Video Properties
+    # Get Video Properties
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -22,12 +22,12 @@ def process_video_file(input_path, output_path, is_demo, test="light"):
     print(f"Processing Video: {input_path}")
     print(f"Resolution: {width}x{height} | FPS: {fps} | Total Frames: {total_frames}")
 
-    # 3. Setup Output Writer
+    # Setup Output Writer
     # 'mp4v' is widely supported for .mp4. If it fails, try 'avc1' or 'XVID' (for .avi)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
     out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
-    # 4. Initialize Enhancer
+    # Initialize Enhancer
     enhancer = VideoEnhancer()
     
     frame_count = 0
