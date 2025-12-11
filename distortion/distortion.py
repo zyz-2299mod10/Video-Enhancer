@@ -1,28 +1,12 @@
 import numpy as np
 import cv2
-from scipy.interpolate import RectBivariateSpline
 
-def undistortion(frame, k1=0.5, k2=0.1):
-    h, w = frame.shape[:2]
-    f = 1.5 * w
-    cx, cy = w / 2.0, h / 2.0
+def remove_fish_eye(img):
+    DIM=(640, 480)
+    K=np.array([[651.1879334257668, 0.0, 320.3126614422408], [0.0, 650.9817909640441, 278.97173817481263], [0.0, 0.0, 1.0]])
+    D=np.array([[0.17105350704748695], [-0.5008937086636058], [1.0712933223194445], [-2.032938576668345]])
 
-    u_out, v_out = np.meshgrid(np.arange(w), np.arange(h))
+    map1, map2 = cv2.fisheye.initUndistortRectifyMap(K, D, np.eye(3), K, DIM, cv2.CV_16SC2)
+    undistorted_img = cv2.remap(img, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
 
-    x = (u_out-cx) / f
-    y = (v_out-cy) / f
-
-    r_square = x**2 + y**2
-    k = 1 + k1*r_square + k2*(r_square**2)
-    xd, yd = x / k, y / k
-
-    u_in = xd * f + cx
-    v_in = yd * f + cy
-
-    output = np.zeros_like(frame, dtype=frame.dtype)
-    for c in range(frame.shape[2]):
-        func = RectBivariateSpline(np.arange(h), np.arange(w), frame[:, :, c], kx=1, ky=1)
-        pixels = func.ev(v_in.flatten(), u_in.flatten()).reshape(h, w)
-        output[:, :, c] = np.clip(pixels, 0, 255).astype(frame.dtype)
-    
-    return output
+    return undistorted_img
