@@ -21,10 +21,10 @@ BLEND_LOW_LIGHT = 0.5      # Medium: Smooth out noise flickering, but allow moti
 BLEND_NORMAL = 0.1         # Low: Smooth transitions when light returns, acts as mild stabilization
 
 DARKEN_FACTOR = 0.6        # Factor to darken white frames before blending
-MAX_BLEND_FRAMES = 8       # Max frames to force blend in overexposure
+MAX_BLEND_FRAMES = 5       # Max frames to force blend in overexposure
 
 
-class VideoEnhancer:
+class LightEnhancer:
     def __init__(self):
         self.last_good_frame = None
         self.overexposure_counter = 0
@@ -210,7 +210,7 @@ def main():
     is_demo = args.demo
 
     # Initialize the Processor
-    enhancer = VideoEnhancer()
+    enhancer = LightEnhancer()
 
     for root, dirs, files in os.walk(input_root):
         
@@ -218,7 +218,7 @@ def main():
         sorted_files = sorted([f for f in files if f.lower().endswith(('.jpg', '.png', '.jpeg', '.bmp'))])
         
         if len(sorted_files) > 0:
-            enhancer = VideoEnhancer() 
+            enhancer = LightEnhancer() 
 
         for file in sorted_files:
             input_path = os.path.join(root, file)

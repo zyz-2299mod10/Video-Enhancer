@@ -41,7 +41,6 @@ def extract_frames(video_path, output_root):
 def main():
     parser = argparse.ArgumentParser()
     
-    # 設定 Arguments
     parser.add_argument('--input', type=str, default="./data")
     parser.add_argument('--output', type=str, default="./data/frame")
     
