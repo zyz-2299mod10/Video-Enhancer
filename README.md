@@ -41,7 +41,7 @@ The `LightEnhancer` class analyzes the average brightness of each frame and appl
 -   **Overexposure (> 200)**:
     -   **Blending**: If a sudden flash occurs, it blends with the last good frame to "hide" the washout.
     -   **Darkening & Contrast**: Darkens the image and reapplies contrast stretching to recover details.
-    -   **Gamma Correction**: If blending isn't possible (e.g., prolonged overexposure), applies Gamma correction (`gamma=1.2`) to compress highlights.
+    -   **Gamma Correction**: If blending isn't possible (e.g., prolonged overexposure), applies Gamma correction (`gamma=0.9`) to compress highlights.
 
 -   **Pitch Black (< 2.0)**:
     -   Prevents noise amplification by blending towards a black frame.
