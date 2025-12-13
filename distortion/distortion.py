@@ -1,5 +1,7 @@
 import numpy as np
 import cv2
+import argparse
+import os
 
 def remove_fish_eye(img):
     DIM=(640, 480)
@@ -10,3 +12,36 @@ def remove_fish_eye(img):
     undistorted_img = cv2.remap(img, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
 
     return undistorted_img
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', type=str, required=True, help='Input folder path')
+    parser.add_argument('--output', type=str, required=True, help='Output folder path')
+    
+    args = parser.parse_args()
+    input_root = args.input
+    output_root = args.output
+
+    # Initialize the Processor
+
+    for root, dirs, files in os.walk(input_root):
+        # Sort files to ensure temporal order
+        sorted_files = sorted([f for f in files if f.lower().endswith(('.jpg', '.png', '.jpeg', '.bmp'))])
+
+        for file in sorted_files:
+            input_path = os.path.join(root, file)
+            rel_path = os.path.relpath(input_path, input_root)
+            output_path = os.path.join(output_root, rel_path)
+            
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            
+            img = cv2.imread(input_path)
+            if img is None:
+                continue
+
+            result_img = remove_fish_eye(img)
+
+            cv2.imwrite(output_path, result_img)
+
+if __name__ == "__main__":
+    main()

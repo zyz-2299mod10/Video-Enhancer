@@ -9,7 +9,7 @@ THRESH_LOWLIGHT = 80
 THRESH_BLACK_HOLE = 2.0    # Threshold for "pitch black", helps avoid amplifying pure noise
 
 # Algorithm Parameters
-GAMMA_VAL = 1.2            
+GAMMA_VAL = 0.9            
 CLAHE_CLIP = 0.5           
 TILE_GRID_SIZE = (8, 8)
 
@@ -17,11 +17,12 @@ TILE_GRID_SIZE = (8, 8)
 #   Alpha determines how much of the "PREVIOUS" frame we keep.
 #   Result = (Previous * Alpha) + (Current * (1 - Alpha))
 BLEND_OVER_EX = 0.7        # High: Hide the white screen aggressively
+BLEND_OVER_EX_NORMAL = 0.3        # High: Hide the white screen aggressively
 BLEND_LOW_LIGHT = 0.5      # Medium: Smooth out noise flickering, but allow motion
 BLEND_NORMAL = 0.1         # Low: Smooth transitions when light returns, acts as mild stabilization
 
 DARKEN_FACTOR = 0.6        # Factor to darken white frames before blending
-MAX_BLEND_FRAMES = 5       # Max frames to force blend in overexposure
+MAX_BLEND_FRAMES = 3       # Max frames to force blend in overexposure
 
 
 class LightEnhancer:
@@ -156,7 +157,7 @@ class LightEnhancer:
                 processed_img = self.apply_gamma_correction(processed_img, gamma=GAMMA_VAL)
                 
                 # blending with slight normal weight to smooth transition
-                processed_img = self.temporal_blend_rgb(processed_img, BLEND_NORMAL)
+                processed_img = self.temporal_blend_rgb(processed_img, BLEND_OVER_EX_NORMAL)
 
         # Low Light
         elif brightness < THRESH_LOWLIGHT:
