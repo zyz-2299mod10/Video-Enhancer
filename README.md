@@ -2,6 +2,19 @@
 
 This project implements a video enhancement pipeline addressing low-light/overexposure conditions, lens distortion, and resolution upscaling.
 
+## Install
+```
+conda create -n DIP python=3.10
+conda activate DIP
+
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130 (Check your CUDA-torch version from https://pytorch.org/get-started/previous-versions/)
+pip install -r requirements.txt
+
+# for Real-ESRGAN
+cd Real_ESRGAN
+python setup.py develop
+```
+
 ## Usage
 
 Run the main script `main.py` to process videos:

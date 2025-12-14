@@ -10,9 +10,21 @@ from distortion.sobel_detail import enhance_sobel
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'Real_ESRGAN'))
 try:
+    import types
+    from torchvision.transforms.functional import rgb_to_grayscale
+
+    # Create a module for `torchvision.transforms.functional_tensor`
+    functional_tensor = types.ModuleType("torchvision.transforms.functional_tensor")
+    functional_tensor.rgb_to_grayscale = rgb_to_grayscale
+
+    # Add this module to sys.modules so other imports can access it
+    sys.modules["torchvision.transforms.functional_tensor"] = functional_tensor
+
     from Real_ESRGAN.video_super_resolution import videoSR
     SR_CHECK = True
-except:
+except Exception as e:
+    print("Fall back to basic DIP")
+    print(f"ERROR: {e}")
     SR_CHECK = False
 
 def process_video_file(input_path, output_path, is_demo, test="light"):
