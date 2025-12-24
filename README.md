@@ -4,9 +4,58 @@ This project is to improve the image quality and to develop new functionalities 
 
 ## Demo
 ### Final demo
-https://github.com/user-attachments/assets/a74273d4-9494-4dab-a411-bb275cdb33d9
+#### Demo 1
+* **Before** 
+
+
+https://github.com/user-attachments/assets/a74273d4-9494-4dab-a411-bb275cdb33d9 
+
+
+* **After** 
+
+
 https://github.com/user-attachments/assets/27e32a8b-73e3-45a1-8f01-78ad3358a7c4
 
+
+#### Demo 2
+* **Before** 
+
+
+https://github.com/user-attachments/assets/fae98e5e-c39c-423d-ad40-f4faf2f05fe0
+
+
+* **After** 
+
+
+https://github.com/user-attachments/assets/1800d071-99b9-432e-be22-bc99133b2027
+
+
+### method comparison
+#### exposure adjustment
+* **Before** 
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/73ae1823-06ac-4d03-ba85-900d530af2c1" />
+
+* **After** 
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/9fb223cb-504d-439b-bc8d-fea2311a2c68" />
+
+#### barrel distortion
+* **Before**
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/c1357358-6a56-4383-8780-ace40ee38000" />
+
+* **After**
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/fb5af592-0640-45ce-9a00-1ef1613b5899" />
+
+#### Super-Resolution
+* **Before**
+
+
+https://github.com/user-attachments/assets/5d02429e-ce17-49f6-8f6a-c26d85c2b365
+
+
+* **After**
+
+
+https://github.com/user-attachments/assets/722947f2-2905-4176-a5e6-8fb7da3734db
 
 
 
